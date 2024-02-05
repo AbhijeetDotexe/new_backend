@@ -29,29 +29,4 @@ const userSchema = mongoose.Schema(
   }
 );
 
-// userSchema.methods.generateAccessToken = function () {
-//   return jwt.sign(
-//     {
-//       _id: this._id,
-//       email: this.email,
-//       username: this.username,
-//     },
-//     secret,
-//     {
-//       expiresIn: "10D",
-//     }
-//   );
-// };
-// userSchema.methods.generateRefreshToken = function () {
-//   return jwt.sign(
-//     {
-//       id: this._id,
-//     },
-//     refreshTokenSecret,
-//     {
-//       expiresIn: "10D",
-//     }
-//   );
-// };
-
 module.exports = mongoose.model("userModel", userSchema);

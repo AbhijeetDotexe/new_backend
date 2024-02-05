@@ -5,6 +5,7 @@ const userModel = require("../model/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const saltRounds = 5;
+const secretmessage = "This is just for testing";
 
 router.get("/", async (req, res) => {
   try {
@@ -93,6 +94,7 @@ router.post("/login", async (req, res) => {
         expiresIn: "1h",
       }
     );
+    res.json("User logged in successfully");
   } catch (error) {
     res.json({ error: "Login Failed" });
   }

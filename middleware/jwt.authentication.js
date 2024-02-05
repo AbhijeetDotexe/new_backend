@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const secretKey = "This is just for testing";
 function verifyToken(req, res, next) {
   const Token = req.header("Authorization");
   if (!Token) {
@@ -6,7 +7,7 @@ function verifyToken(req, res, next) {
   }
 
   try {
-    const decoded = jwt.verify(token, "secretKey");
+    const decoded = jwt.verify(token, secretKey);
     req.userid = decoded.userid;
     next();
   } catch (error) {
