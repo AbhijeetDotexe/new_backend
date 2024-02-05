@@ -1,4 +1,3 @@
-// username, fullname, email, passoword
 const express = require("express");
 const router = express.Router();
 const userModel = require("../model/user.model");
@@ -10,7 +9,7 @@ const client = require("../db/redis");
 let count = 1;
 router.get("/", async (req, res) => {
   try {
-    const key = `${req.body.method}:${req.body.originalUrl}`;
+    const key = `UserData: detailsofalltheusers`;
     const redisData = await client.get(key);
     if (redisData && (count & 1) == 0) {
       console.log("Getting data for redis database");
