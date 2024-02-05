@@ -6,11 +6,25 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const saltRounds = 5;
 const secretmessage = "This is just for testing";
-
+const client = require("../db/redis");
+let count = 1;
 router.get("/", async (req, res) => {
   try {
-    const users = await userModel.find({});
-    res.json(users);
+    const key = `${req.body.method}:${req.body.originalUrl}`;
+    const redisData = await client.get(key);
+    if (redisData && (count & 1) == 0) {
+      console.log("Getting data for redis database");
+      count++;
+      res.send(redisData);
+    } else {
+      const users = await userModel.find({});
+      await client.set(key, JSON.stringify(users));
+      console.log(key);
+      client.expire(key, 10);
+      console.log(`Getting data from mongoose database, ${count}`);
+      count++;
+      res.json(users);
+    }
   } catch (error) {
     res.json({ error: "Error getting details of the users" });
   }
@@ -69,9 +83,9 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.get("/login/:username", async (req, res) => {
   try {
-    const user = await userModel.findOne({ username: req.body.username });
+    const user = await userModel.findOne({ username: req.params.username });
     if (!user) {
       res.json({ error: "No such username exists" });
     }

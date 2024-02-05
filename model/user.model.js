@@ -1,8 +1,5 @@
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/Backend");
-const jwt = require("jsonwebtoken");
-const secret = "This is just for testing";
-const refreshTokenSecret = "This is also for testing";
 const userSchema = mongoose.Schema(
   {
     username: {

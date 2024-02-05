@@ -3,8 +3,9 @@ const app = express();
 const pageRouter = require("./routes/page.routes");
 const userRouter = require("./routes/user.routes");
 const jwtRouter = require("./routes/jwt.routes");
+const client = require("./db/redis");
 app.use(express.json());
-
+client.connect();
 app.use("/user", userRouter);
 app.use("/page", pageRouter);
 app.use("/jwt", jwtRouter);
