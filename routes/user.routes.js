@@ -18,5 +18,5 @@ router.patch("/:id", updateUser);
 
 router.post("/register", register);
 
-router.get("/login/:username", login);
+router.get("/login", login);
 module.exports = router;

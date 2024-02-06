@@ -83,31 +83,34 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
+  console.log(req.query);
   try {
-    const user = await userModel.findOne({ username: req.params.username });
+    const email = req.query.email;
+    const user = await userModel.findOne({ email: email });
+    console.log(user);
     if (!user) {
       res.json({ error: "No such username exists" });
-    }
+    } else {
+      const passwordMatch = await bcrypt.compare(
+        req.query.password,
+        user.password
+      );
 
-    const passwordMatch = await bcrypt.compare(
-      req.body.password,
-      user.password
-    );
-
-    if (!passwordMatch) {
-      res.json({ error: "Password does not match with the username" });
-    }
-
-    const token = jwt.sign(
-      {
-        userid: user._id,
-      },
-      secretmessage,
-      {
-        expiresIn: "1h",
+      if (!passwordMatch) {
+        res.json({ error: "Password does not match with the username" });
       }
-    );
-    res.json("User logged in successfully");
+
+      const token = jwt.sign(
+        {
+          userid: user._id,
+        },
+        secretmessage,
+        {
+          expiresIn: "1h",
+        }
+      );
+      res.send({ user: token });
+    }
   } catch (error) {
     res.json({ error: "Login Failed" });
   }
