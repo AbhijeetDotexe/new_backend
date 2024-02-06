@@ -5,11 +5,13 @@ const userRouter = require("./routes/user.routes");
 const jwtRouter = require("./routes/jwt.routes");
 const client = require("./db/redis");
 const dotenv = require("dotenv");
+const cors = require("cors");
 dotenv.config();
 
 const connectMongoose = require("./db/mongoose");
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 connectMongoose();
+app.use(cors());
 app.use(express.json());
 client.connect();
 app.use("/user", userRouter);
