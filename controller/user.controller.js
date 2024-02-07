@@ -14,7 +14,7 @@ const getUsers = async (req, res) => {
     if (redisData && (count & 1) == 0) {
       console.log("Getting data for redis database");
       count++;
-      res.send(redisData);
+      res.send(JSON.parse(redisData));
     } else {
       const users = await userModel.find({});
       await client.set(key, JSON.stringify(users));

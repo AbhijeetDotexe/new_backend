@@ -20,7 +20,7 @@ const getData = async (req, res) => {
     if (redisData && (count & 1) == 0) {
       console.log("Getting page data from the redis server");
       count += 1;
-      res.send(redisData);
+      res.send(JSON.parse(redisData));
     } else {
       const allPages = await pageModel.find({});
       await client.set(key, JSON.stringify(allPages));
